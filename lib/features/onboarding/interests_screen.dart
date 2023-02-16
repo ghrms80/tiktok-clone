@@ -136,7 +136,7 @@ class _InterestsScreenState extends State<InterestsScreen> {
                   runSpacing: 15,
                   children: [
                     for (var interest in interests)
-                      interestButton(interest: interest),
+                      InterestButton(interest: interest),
                   ],
                 ),
               ],

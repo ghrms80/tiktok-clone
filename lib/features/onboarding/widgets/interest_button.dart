@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 
-class interestButton extends StatefulWidget {
-  const interestButton({
+class InterestButton extends StatefulWidget {
+  const InterestButton({
     Key? key,
     required this.interest,
   }) : super(key: key);
@@ -10,10 +10,10 @@ class interestButton extends StatefulWidget {
   final String interest;
 
   @override
-  State<interestButton> createState() => _interestButtonState();
+  State<InterestButton> createState() => _InterestButtonState();
 }
 
-class _interestButtonState extends State<interestButton> {
+class _InterestButtonState extends State<InterestButton> {
   bool _isSelected = false;
 
   void _onTap() {
