@@ -24,13 +24,13 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
   final TextEditingController _textEditingController = TextEditingController();
   bool _isWriting = false;
 
-  void _onSearchChanged(String value) {
-    print("Searching from $value");
-  }
+  // void _onSearchChanged(String value) {
+  //   print("Searching from $value");
+  // }
 
-  void _onSearchSubmitted(String value) {
-    print("Submitted $value");
-  }
+  // void _onSearchSubmitted(String value) {
+  //   print("Submitted $value");
+  // }
 
   @override
   void dispose() {
