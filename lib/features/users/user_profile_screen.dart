@@ -14,10 +14,12 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       slivers: [
         SliverAppBar(
           floating: true,
+          snap: true,
+          pinned: true,
           stretch: true,
           backgroundColor: Colors.teal,
-          collapsedHeight: 80, // toolBarHeight
-          expandedHeight: 200, // full extended Height
+          collapsedHeight: 80,
+          expandedHeight: 200,
           flexibleSpace: FlexibleSpaceBar(
             stretchModes: const [
               StretchMode.blurBackground,
@@ -31,6 +33,19 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             title: const Text("Hello!"),
             centerTitle: true,
           ),
+        ),
+        SliverFixedExtentList(
+          delegate: SliverChildBuilderDelegate(
+            childCount: 25,
+            (context, index) => Container(
+              color: Colors.amber[100 * (index % 9)],
+              child: Align(
+                alignment: Alignment.center,
+                child: Text("Item $index"),
+              ),
+            ),
+          ),
+          itemExtent: 100,
         ),
       ],
     );
