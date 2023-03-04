@@ -14,7 +14,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     return CustomScrollView(
       slivers: [
         SliverAppBar(
-          pinned: true,
+          // pinned: true,
           stretch: true,
           backgroundColor: Colors.teal,
           collapsedHeight: 80,
@@ -33,6 +33,16 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             centerTitle: true,
           ),
         ),
+        SliverToBoxAdapter(
+          child: Column(
+            children: const [
+              CircleAvatar(
+                backgroundColor: Colors.red,
+                radius: 20,
+              )
+            ],
+          ),
+        ),
         SliverFixedExtentList(
           delegate: SliverChildBuilderDelegate(
             childCount: 25,
@@ -46,9 +56,14 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           ),
           itemExtent: 100,
         ),
+        SliverPersistentHeader(
+          delegate: CustomDelegate(),
+          floating: true,
+          // pinned: true,
+        ),
         SliverGrid(
           delegate: SliverChildBuilderDelegate(
-            childCount: 25,
+            childCount: 40,
             (context, index) => Container(
               color: Colors.blue[100 * (index % 9)],
               child: Align(
@@ -66,5 +81,43 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         ),
       ],
     );
+  }
+}
+
+class CustomDelegate extends SliverPersistentHeaderDelegate {
+  @override
+  // 사용자가 보게될 위젯을 반환
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return Container(
+      color: Colors.indigo,
+      // 부모로부터 최대한 많은 공간을 차지하는 위젯
+      child: const FractionallySizedBox(
+        heightFactor: 1,
+        child: Center(
+          child: Text(
+            'Title!!!',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: Sizes.size20,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  // 최대 높이, getter이므로 double을 return
+  double get maxExtent => 150;
+
+  @override
+  // 최저 높이, getter이므로 double을 return
+  double get minExtent => 80;
+
+  @override
+  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
+    // flutter에게 persistent header가 보여져야 되는지 알려주는 메서드
+    return false;
   }
 }
