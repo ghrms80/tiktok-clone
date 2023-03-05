@@ -72,7 +72,7 @@ class _VideoPostState extends State<VideoPost>
     _initVideoPlayer();
 
     _tagString = _tags.reduce((value, element) => "$value $element");
-    print(_tagString);
+    // print(_tagString);
 
     _animationController = AnimationController(
       vsync: this,

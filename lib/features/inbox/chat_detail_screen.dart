@@ -30,7 +30,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
   }
 
   void _onChanged(String value) {
-    print('changed: $value');
+    // print('changed: $value');
   }
 
   @override
