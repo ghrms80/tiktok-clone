@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tiktok_clone/constants/breakponts.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 
@@ -54,6 +55,8 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    print(width);
     return DefaultTabController(
       length: tabs.length,
       child: Scaffold(
@@ -157,10 +160,10 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
               keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               padding: const EdgeInsets.all(Sizes.size6),
               itemCount: 20,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2, // Column num
-                crossAxisSpacing: Sizes.size10, // Column Space
-                mainAxisSpacing: Sizes.size10, // Row Space
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: width > Breakpoints.md ? 5 : 2,
+                crossAxisSpacing: Sizes.size10,
+                mainAxisSpacing: Sizes.size10,
                 childAspectRatio: 9 / 20,
               ),
               itemBuilder: (context, index) => Column(

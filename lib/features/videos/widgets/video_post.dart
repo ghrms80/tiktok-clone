@@ -42,7 +42,7 @@ class _VideoPostState extends State<VideoPost>
 
   late final AnimationController _animationController;
 
-  bool _isPaused = true;
+  bool _isPaused = false;
   bool _isMoreTagsShowed = false;
 
   final Iterable<String> _tags = keywords.map((tag) => "#$tag");
