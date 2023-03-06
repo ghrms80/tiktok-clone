@@ -58,8 +58,12 @@ class _VideoPostState extends State<VideoPost>
   }
 
   void _initVideoPlayer() async {
-    _videoPlayerController =
-        VideoPlayerController.asset("assets/videos/video.mp4");
+    _videoPlayerController = VideoPlayerController.asset(
+      "assets/videos/video_mod.mp4",
+    );
+    // _videoPlayerController = VideoPlayerController.network(
+    //   'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4',
+    // );
     await _videoPlayerController.initialize();
     await _videoPlayerController.setLooping(true);
     _videoPlayerController.addListener(_onVideoChange);
