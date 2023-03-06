@@ -42,7 +42,7 @@ class _VideoPostState extends State<VideoPost>
 
   late final AnimationController _animationController;
 
-  bool _isPaused = false;
+  bool _isPaused = true;
   bool _isMoreTagsShowed = false;
 
   final Iterable<String> _tags = keywords.map((tag) => "#$tag");
@@ -61,11 +61,11 @@ class _VideoPostState extends State<VideoPost>
     _videoPlayerController = VideoPlayerController.asset(
       "assets/videos/video_mod.mp4",
     );
-    // _videoPlayerController = VideoPlayerController.network(
-    //   'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4',
-    // );
     await _videoPlayerController.initialize();
     await _videoPlayerController.setLooping(true);
+    // if (kIsWeb) {
+    //   await _videoPlayerController.setVolume(0.0);
+    // }
     _videoPlayerController.addListener(_onVideoChange);
     setState(() {});
   }
@@ -90,6 +90,7 @@ class _VideoPostState extends State<VideoPost>
   @override
   void dispose() {
     _videoPlayerController.dispose();
+    _animationController.dispose();
     super.dispose();
   }
 
