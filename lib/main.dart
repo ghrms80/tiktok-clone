@@ -46,7 +46,6 @@ class TicTokApp extends StatelessWidget {
         ),
       ),
       home: const MainNavigationScreen(),
-      // home: const SignUpScreen(),
     );
   }
 }
