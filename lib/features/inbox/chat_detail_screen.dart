@@ -13,21 +13,21 @@ class ChatDetailScreen extends StatefulWidget {
 class _ChatDetailScreenState extends State<ChatDetailScreen> {
   final TextEditingController _textEditingController = TextEditingController();
 
-  bool _isWriting = false;
+  // bool _isWriting = false;
 
   void _onStartWriting() {
     setState(() {
-      _isWriting = true;
+      // _isWriting = true;
     });
   }
 
-  void _onStopWriting() {
-    FocusScope.of(context).unfocus();
-    setState(() {
-      _textEditingController.clear();
-      _isWriting = false;
-    });
-  }
+  // void _onStopWriting() {
+  //   FocusScope.of(context).unfocus();
+  //   setState(() {
+  //     _textEditingController.clear();
+  //     _isWriting = false;
+  //   });
+  // }
 
   void _onChanged(String value) {
     // print('changed: $value');

@@ -43,19 +43,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           ListTile(
             onTap: () async {
-              final date = await showDatePicker(
-                context: context,
-                initialDate: DateTime.now(),
-                firstDate: DateTime(1960),
-                lastDate: DateTime(2040),
-              );
-              print(date);
-              final time = await showTimePicker(
-                context: context,
-                initialTime: TimeOfDay.now(),
-              );
-              print(time);
-              final booking = await showDateRangePicker(
+              await showDateRangePicker(
                 context: context,
                 firstDate: DateTime(1970),
                 lastDate: DateTime(2040),
@@ -70,7 +58,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       child: child!);
                 },
               );
-              print(booking);
             },
             title: const Text("What is your birthday?"),
             subtitle: const Text("I need to know!"),
