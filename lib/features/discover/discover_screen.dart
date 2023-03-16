@@ -1,8 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/breakponts.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/utils.dart';
 
 final tabs = [
   "Top",
@@ -22,16 +24,19 @@ class DiscoverScreen extends StatefulWidget {
 }
 
 class _DiscoverScreenState extends State<DiscoverScreen> {
-  final TextEditingController _textEditingController = TextEditingController();
-  bool _isWriting = false;
+  final TextEditingController _textEditingController = TextEditingController(
+    text: "Initial Text",
+  );
 
-  // void _onSearchChanged(String value) {
-  //   print("Searching from $value");
-  // }
+  // bool _isWriting = false;
 
-  // void _onSearchSubmitted(String value) {
-  //   print("Submitted $value");
-  // }
+  void _onSearchChanged(String value) {
+    // print("Searching from $value");
+  }
+
+  void _onSearchSubmitted(String value) {
+    // print("Submitted $value");
+  }
 
   @override
   void dispose() {
@@ -39,19 +44,19 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
     super.dispose();
   }
 
-  void _onStartWriting() {
-    setState(() {
-      _isWriting = true;
-    });
-  }
+  // void _onStartWriting() {
+  //   setState(() {
+  //     _isWriting = true;
+  //   });
+  // }
 
-  void _stopWriting() {
-    FocusScope.of(context).unfocus();
-    setState(() {
-      _textEditingController.clear();
-      _isWriting = false;
-    });
-  }
+  // void _stopWriting() {
+  //   FocusScope.of(context).unfocus();
+  //   setState(() {
+  //     _textEditingController.clear();
+  //     _isWriting = false;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -62,79 +67,82 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           elevation: 1,
-          // title: CupertinoSearchTextField(
-          //   controller: _textEditingController,
-          //   onChanged: _onSearchChanged,
-          //   onSubmitted: _onSearchSubmitted,
-          // ),
-          title: Container(
-            constraints: const BoxConstraints(
-              maxWidth: Breakpoints.sm,
-            ),
-            child: SizedBox(
-              height: Sizes.size36,
-              child: TextField(
-                controller: _textEditingController,
-                onTap: _onStartWriting,
-                expands: true,
-                minLines: null,
-                maxLines: null,
-                textInputAction: TextInputAction.newline,
-                cursorColor: Theme.of(context).primaryColor,
-                decoration: InputDecoration(
-                  hintText: 'Search',
-                  hintStyle: const TextStyle(
-                    fontSize: Sizes.size16,
-                    color: Colors.grey,
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(Sizes.size6),
-                    borderSide: BorderSide.none,
-                  ),
-                  filled: true,
-                  fillColor: Colors.grey.shade100,
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: Sizes.size10,
-                  ),
-                  prefixIconConstraints: const BoxConstraints(
-                    minWidth: 30,
-                  ),
-                  prefixIcon: Padding(
-                    padding: const EdgeInsets.only(
-                      left: Sizes.size8,
-                    ),
-                    child: FaIcon(
-                      FontAwesomeIcons.magnifyingGlass,
-                      color: Colors.grey.shade500,
-                      size: Sizes.size18,
-                    ),
-                  ),
-                  suffixIconConstraints: const BoxConstraints(
-                    minWidth: 30,
-                  ),
-                  suffixIcon: Padding(
-                    padding: const EdgeInsets.only(
-                      right: Sizes.size8,
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        if (_isWriting)
-                          GestureDetector(
-                            onTap: _stopWriting,
-                            child: FaIcon(
-                              FontAwesomeIcons.solidCircleXmark,
-                              color: Colors.grey.shade500,
-                              size: Sizes.size18,
-                            ),
-                          ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
+          title: CupertinoSearchTextField(
+            controller: _textEditingController,
+            onChanged: _onSearchChanged,
+            onSubmitted: _onSearchSubmitted,
+            style: TextStyle(
+              color: isDarkMode(context) ? Colors.white : Colors.black,
             ),
           ),
+          // title: Container(
+          //   constraints: const BoxConstraints(
+          //     maxWidth: Breakpoints.sm,
+          //   ),
+          //   child: SizedBox(
+          //     height: Sizes.size36,
+          //     child: TextField(
+          //       controller: _textEditingController,
+          //       onTap: _onStartWriting,
+          //       expands: true,
+          //       minLines: null,
+          //       maxLines: null,
+          //       textInputAction: TextInputAction.newline,
+          //       cursorColor: Theme.of(context).primaryColor,
+          //       decoration: InputDecoration(
+          //         hintText: 'Search',
+          //         hintStyle: const TextStyle(
+          //           fontSize: Sizes.size16,
+          //           color: Colors.grey,
+          //         ),
+          //         border: OutlineInputBorder(
+          //           borderRadius: BorderRadius.circular(Sizes.size6),
+          //           borderSide: BorderSide.none,
+          //         ),
+          //         filled: true,
+          //         fillColor: Colors.grey.shade100,
+          //         contentPadding: const EdgeInsets.symmetric(
+          //           horizontal: Sizes.size10,
+          //         ),
+          //         prefixIconConstraints: const BoxConstraints(
+          //           minWidth: 30,
+          //         ),
+          //         prefixIcon: Padding(
+          //           padding: const EdgeInsets.only(
+          //             left: Sizes.size8,
+          //           ),
+          //           child: FaIcon(
+          //             FontAwesomeIcons.magnifyingGlass,
+          //             color: Colors.grey.shade500,
+          //             size: Sizes.size18,
+          //           ),
+          //         ),
+          //         suffixIconConstraints: const BoxConstraints(
+          //           minWidth: 30,
+          //         ),
+          //         suffixIcon: Padding(
+          //           padding: const EdgeInsets.only(
+          //             right: Sizes.size8,
+          //           ),
+          //           child: Row(
+          //             mainAxisSize: MainAxisSize.min,
+          //             children: [
+          //               if (_isWriting)
+          //                 GestureDetector(
+          //                   onTap: _stopWriting,
+          //                   child: FaIcon(
+          //                     FontAwesomeIcons.solidCircleXmark,
+          //                     color: Colors.grey.shade500,
+          //                     size: Sizes.size18,
+          //                   ),
+          //                 ),
+          //             ],
+          //           ),
+          //         ),
+          //       ),
+          //     ),
+          //   ),
+          // ),
           centerTitle: true,
           bottom: TabBar(
             onTap: (value) => FocusScope.of(context).unfocus(),
@@ -147,9 +155,7 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
               fontWeight: FontWeight.w600,
               fontSize: Sizes.size16,
             ),
-            labelColor: Colors.black,
-            unselectedLabelColor: Colors.grey.shade500,
-            indicatorColor: Colors.black,
+            indicatorColor: Theme.of(context).tabBarTheme.indicatorColor,
             tabs: [
               for (var tab in tabs)
                 Tab(
@@ -191,11 +197,11 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                       ),
                     ),
                     Gaps.v10,
-                    Text(
-                      "${constrains.maxWidth} This is a very long caption for my tiktok that im upload just now currently.",
+                    const Text(
+                      "This is a very long caption for my tiktok that im upload just now currently.",
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: Sizes.size16,
                         fontWeight: FontWeight.bold,
                       ),
@@ -204,7 +210,9 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                     if (constrains.maxWidth < 200 || constrains.maxWidth > 250)
                       DefaultTextStyle(
                         style: TextStyle(
-                          color: Colors.grey.shade600,
+                          color: isDarkMode(context)
+                              ? Colors.grey.shade300
+                              : Colors.grey.shade600,
                           fontWeight: FontWeight.w600,
                         ),
                         child: Row(

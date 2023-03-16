@@ -47,8 +47,19 @@ class TicTokApp extends StatelessWidget {
             fontWeight: FontWeight.w600,
           ),
         ),
+        tabBarTheme: TabBarTheme(
+          indicatorColor: Colors.black,
+          labelColor: Colors.black,
+          unselectedLabelColor: Colors.grey.shade500,
+        ),
       ),
       darkTheme: ThemeData(
+        tabBarTheme: const TabBarTheme(
+          indicatorColor: Colors.white,
+        ),
+        textSelectionTheme: const TextSelectionThemeData(
+          cursorColor: Color(0xFFE9435A),
+        ),
         textTheme: Typography.whiteMountainView,
         brightness: Brightness.dark,
         scaffoldBackgroundColor: Colors.black,
