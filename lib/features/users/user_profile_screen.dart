@@ -93,6 +93,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                   "Following",
                                   style: TextStyle(
                                     color: Colors.grey.shade500,
+                                    height: 1,
                                   ),
                                 ),
                               ],
@@ -118,6 +119,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                   "Followers",
                                   style: TextStyle(
                                     color: Colors.grey.shade500,
+                                    height: 1,
                                   ),
                                 ),
                               ],
@@ -143,6 +145,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                   "Likes",
                                   style: TextStyle(
                                     color: Colors.grey.shade500,
+                                    height: 1,
                                   ),
                                 ),
                               ],
