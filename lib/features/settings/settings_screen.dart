@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -43,21 +44,41 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           ListTile(
             onTap: () async {
-              await showDateRangePicker(
+              final date = await showDatePicker(
                 context: context,
-                firstDate: DateTime(1970),
-                lastDate: DateTime(2040),
+                initialDate: DateTime.now(),
+                firstDate: DateTime(1980),
+                lastDate: DateTime(2030),
+              );
+              if (kDebugMode) {
+                print(date);
+              }
+              if (!mounted) return;
+              final time = await showTimePicker(
+                context: context,
+                initialTime: TimeOfDay.now(),
+              );
+              if (kDebugMode) {
+                print(time);
+              }
+              if (!mounted) return;
+              final booking = await showDateRangePicker(
+                context: context,
+                firstDate: DateTime(1980),
+                lastDate: DateTime(2030),
                 builder: (context, child) {
                   return Theme(
-                      data: ThemeData(
+                    data: ThemeData(
                         appBarTheme: const AppBarTheme(
-                          foregroundColor: Colors.white,
-                          backgroundColor: Colors.black,
-                        ),
-                      ),
-                      child: child!);
+                            foregroundColor: Colors.white,
+                            backgroundColor: Colors.black)),
+                    child: child!,
+                  );
                 },
               );
+              if (kDebugMode) {
+                print(booking);
+              }
             },
             title: const Text("What is your birthday?"),
             subtitle: const Text("I need to know!"),
