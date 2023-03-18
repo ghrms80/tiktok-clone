@@ -51,11 +51,11 @@ class S {
   }
 
   /// `Sign up to {nameOfTheApp}`
-  String signUpTitle(Object nameOfTheApp) {
+  String signUpTitle(String nameOfTheApp) {
     return Intl.message(
       'Sign up to $nameOfTheApp',
       name: 'signUpTitle',
-      desc: '',
+      desc: 'The title people see when they open the app for the first time.',
       args: [nameOfTheApp],
     );
   }
@@ -110,13 +110,58 @@ class S {
     );
   }
 
-  /// `Log in {TikTok}`
-  String logInToTiktok(Object TikTok) {
+  /// `Log in {nameOfTheApp}`
+  String logInToTiktok(String nameOfTheApp) {
     return Intl.message(
-      'Log in $TikTok',
+      'Log in $nameOfTheApp',
       name: 'logInToTiktok',
-      desc: '',
-      args: [TikTok],
+      desc: 'The title people see when they open the log in screen',
+      args: [nameOfTheApp],
+    );
+  }
+
+  /// `{value}`
+  String likeCount(int value) {
+    final NumberFormat valueNumberFormat = NumberFormat.compact(
+      locale: Intl.getCurrentLocale(),
+    );
+    final String valueString = valueNumberFormat.format(value);
+
+    return Intl.message(
+      '$valueString',
+      name: 'likeCount',
+      desc: 'Anything you want',
+      args: [valueString],
+    );
+  }
+
+  /// `{value}`
+  String commentCount(int value) {
+    final NumberFormat valueNumberFormat = NumberFormat.compact(
+      locale: Intl.getCurrentLocale(),
+    );
+    final String valueString = valueNumberFormat.format(value);
+
+    return Intl.message(
+      '$valueString',
+      name: 'commentCount',
+      desc: 'Anything you want',
+      args: [valueString],
+    );
+  }
+
+  /// `{value} {value2, plural, =1{comment} other{comments}}`
+  String commentTitle(int value, num value2) {
+    final NumberFormat valueNumberFormat = NumberFormat.compact(
+      locale: Intl.getCurrentLocale(),
+    );
+    final String valueString = valueNumberFormat.format(value);
+
+    return Intl.message(
+      '$valueString ${Intl.plural(value2, one: 'comment', other: 'comments')}',
+      name: 'commentTitle',
+      desc: 'Anything you want',
+      args: [valueString, value2],
     );
   }
 }
