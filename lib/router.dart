@@ -8,24 +8,62 @@ import 'package:tiktok_clone/features/users/user_profile_screen.dart';
 final router = GoRouter(
   routes: [
     GoRoute(
-      path: SignUpScreen.routeName,
+      path: SignUpScreen.routeURL,
+      name: SignUpScreen.routeName,
       builder: (context, state) => const SignUpScreen(),
+      routes: [
+        GoRoute(
+          path: UsernameScreen.routeURL,
+          name: UsernameScreen.routeName,
+          builder: (context, state) => const UsernameScreen(),
+          routes: [
+            GoRoute(
+              path: EmailScreen.routeURL,
+              name: EmailScreen.routeName,
+              builder: (context, state) {
+                final args = state.extra as EmailScreenArgs;
+                return EmailScreen(username: args.username);
+              },
+            ),
+          ],
+        )
+      ],
     ),
     GoRoute(
-      path: LoginScreen.routeName,
+      name: LoginScreen.routeName,
+      path: LoginScreen.routeURL,
       builder: (context, state) => const LoginScreen(),
     ),
-    GoRoute(
+/*     GoRoute(
+      name: "username_screen",
       path: UsernameScreen.routeName,
-      builder: (context, state) => const UsernameScreen(),
-    ),
-    GoRoute(
+      pageBuilder: (context, state) {
+        return CustomTransitionPage(
+          child: const UsernameScreen(),
+          transitionsBuilder: (
+            context,
+            animation,
+            secondaryAnimation,
+            child,
+          ) {
+            return FadeTransition(
+              opacity: animation,
+              child: ScaleTransition(
+                scale: animation,
+                child: child,
+              ),
+            );
+          },
+        );
+      },
+    ), */
+/*     GoRoute(
       path: EmailScreen.routeName,
       builder: (context, state) {
         final args = state.extra as EmailScreenArgs;
         return EmailScreen(username: args.username);
       },
-    ),
+    ), */
     GoRoute(
       path: "/users/:username",
       builder: (context, state) {
