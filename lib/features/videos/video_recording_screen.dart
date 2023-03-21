@@ -13,6 +13,7 @@ class VideoRecordingScreen extends StatefulWidget {
 
 class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
   bool _hasPermission = false;
+  bool _needPermissionAlert = false;
 
   late final CameraController _cameraController;
 
@@ -32,19 +33,29 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
   }
 
   Future<void> initPermissions() async {
+    _hasPermission = false;
+    _needPermissionAlert = false;
+
     final cameraPermission = await Permission.camera.request();
     final micPermission = await Permission.microphone.request();
 
-    final cameraDenied =
-        cameraPermission.isDenied || cameraPermission.isPermanentlyDenied;
+    final cameraPermanentlyDenied = cameraPermission.isPermanentlyDenied;
+    final micPermanentlyDenied = micPermission.isPermanentlyDenied;
 
-    final micDenied =
-        micPermission.isDenied || micPermission.isPermanentlyDenied;
+    final cameraDenied = cameraPermission.isDenied || cameraPermanentlyDenied;
+    final micDenied = micPermission.isDenied || micPermanentlyDenied;
 
-    if (!cameraDenied && !micDenied) {
-      _hasPermission = true;
-      await initCamera();
-      setState(() {});
+    if (cameraPermanentlyDenied || micPermanentlyDenied) {
+      openAppSettings();
+    } else {
+      if (!cameraDenied && !micDenied) {
+        _hasPermission = true;
+        await initCamera();
+        setState(() {});
+      } else {
+        _needPermissionAlert = true;
+        setState(() {});
+      }
     }
   }
 
@@ -61,20 +72,32 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
       body: SizedBox(
         width: MediaQuery.of(context).size.width,
         child: !_hasPermission || !_cameraController.value.isInitialized
-            ? Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Text(
-                    "Requesting permissions...",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: Sizes.size20,
-                    ),
-                  ),
-                  Gaps.v20,
-                  CircularProgressIndicator.adaptive(),
-                ],
-              )
+            ? _needPermissionAlert
+                ? AlertDialog(
+                    title: const Text(
+                        "The camera & microphone are permission denied"),
+                    content: const Text("please set permission again"),
+                    actions: [
+                      TextButton(
+                        onPressed: () => initPermissions(),
+                        child: const Text("Again"),
+                      ),
+                    ],
+                  )
+                : Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Text(
+                        "Requesting permissions...",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: Sizes.size20,
+                        ),
+                      ),
+                      Gaps.v20,
+                      CircularProgressIndicator.adaptive(),
+                    ],
+                  )
             : CameraPreview(_cameraController),
       ),
     );
