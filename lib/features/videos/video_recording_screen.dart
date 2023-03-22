@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/features/videos/widgets/flash_mode.dart';
 
 class VideoRecordingScreen extends StatefulWidget {
   const VideoRecordingScreen({super.key});
@@ -16,8 +17,6 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
   bool _needPermissionAlert = false;
 
   bool _isSelfieMode = false;
-
-  late FlashMode _flashMode;
 
   late CameraController _cameraController;
 
@@ -34,8 +33,6 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
     );
 
     await _cameraController.initialize();
-
-    _flashMode = _cameraController.value.flashMode;
   }
 
   Future<void> initPermissions() async {
@@ -74,12 +71,6 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
   Future<void> toogleSelfieMode() async {
     _isSelfieMode = !_isSelfieMode;
     await initCamera();
-    setState(() {});
-  }
-
-  Future<void> _setFlashMode(FlashMode newFlashMode) async {
-    await _cameraController.setFlashMode(newFlashMode);
-    _flashMode = newFlashMode;
     setState(() {});
   }
 
@@ -133,44 +124,8 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
                           ),
                         ),
                         Gaps.v5,
-                        IconButton(
-                          color: _flashMode == FlashMode.off
-                              ? Colors.amber.shade200
-                              : Colors.grey.shade300,
-                          onPressed: () => _setFlashMode(FlashMode.off),
-                          icon: const Icon(
-                            Icons.flash_off_rounded,
-                          ),
-                        ),
-                        Gaps.v5,
-                        IconButton(
-                          color: _flashMode == FlashMode.always
-                              ? Colors.amber.shade200
-                              : Colors.grey.shade300,
-                          onPressed: () => _setFlashMode(FlashMode.always),
-                          icon: const Icon(
-                            Icons.flash_on_rounded,
-                          ),
-                        ),
-                        Gaps.v5,
-                        IconButton(
-                          color: _flashMode == FlashMode.auto
-                              ? Colors.amber.shade200
-                              : Colors.grey.shade300,
-                          onPressed: () => _setFlashMode(FlashMode.auto),
-                          icon: const Icon(
-                            Icons.flash_auto_rounded,
-                          ),
-                        ),
-                        Gaps.v5,
-                        IconButton(
-                          color: _flashMode == FlashMode.torch
-                              ? Colors.amber.shade200
-                              : Colors.grey.shade300,
-                          onPressed: () => _setFlashMode(FlashMode.torch),
-                          icon: const Icon(
-                            Icons.flashlight_on,
-                          ),
+                        FlashModeWidget(
+                          cameraController: _cameraController,
                         ),
                       ],
                     ),
