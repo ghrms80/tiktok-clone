@@ -16,7 +16,7 @@ class VideoRecordingScreen extends StatefulWidget {
 }
 
 class _VideoRecordingScreenState extends State<VideoRecordingScreen>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin, WidgetsBindingObserver {
   bool _hasPermission = false;
   bool _needPermissionAlert = false;
 
@@ -43,6 +43,42 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
 
   late CameraController _cameraController;
 
+  @override
+  void initState() {
+    super.initState();
+    initPermissions();
+    WidgetsBinding.instance.addObserver(this);
+    _progressAnimationController.addListener(() {
+      setState(() {});
+    });
+    _progressAnimationController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        _stopRecording();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _progressAnimationController.dispose();
+    _buttonAnimationController.dispose();
+    _cameraController.dispose();
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
+    if (!_hasPermission) return;
+    if (!_cameraController.value.isInitialized) return;
+    if (state == AppLifecycleState.inactive) {
+      _cameraController.dispose();
+    } else if (state == AppLifecycleState.resumed) {
+      await initCamera();
+      setState(() {});
+    }
+  }
+
   Future<void> initCamera() async {
     final cameras = await availableCameras();
 
@@ -59,6 +95,8 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     await _cameraController.initialize();
 
     await _cameraController.prepareForVideoRecording();
+
+    setState(() {});
   }
 
   Future<void> initPermissions() async {
@@ -86,20 +124,6 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
         setState(() {});
       }
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    initPermissions();
-    _progressAnimationController.addListener(() {
-      setState(() {});
-    });
-    _progressAnimationController.addStatusListener((status) {
-      if (status == AnimationStatus.completed) {
-        _stopRecording();
-      }
-    });
   }
 
   Future<void> toogleSelfieMode() async {
@@ -132,14 +156,6 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _progressAnimationController.dispose();
-    _buttonAnimationController.dispose();
-    _cameraController.dispose();
-    super.dispose();
   }
 
   Future<void> _onPickVideoPressed() async {
