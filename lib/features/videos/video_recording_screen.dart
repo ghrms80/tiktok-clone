@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:camera/camera.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
@@ -20,6 +23,8 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
   bool _hasPermission = false;
   bool _needPermissionAlert = false;
   bool _isSelfieMode = false;
+
+  final bool _noCamera = kDebugMode && Platform.isIOS;
 
   late double _maxZoom;
   late double _currentZoom;
@@ -49,7 +54,15 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
   @override
   void initState() {
     super.initState();
-    initPermissions();
+    // initPermissions();
+    if (!_noCamera) {
+      initPermissions();
+    } else {
+      setState(() {
+        _hasPermission = true;
+      });
+    }
+
     WidgetsBinding.instance.addObserver(this);
     _progressAnimationController.addListener(() {
       setState(() {});
@@ -205,7 +218,7 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
       backgroundColor: Colors.black,
       body: SizedBox(
         width: MediaQuery.of(context).size.width,
-        child: !_hasPermission || !_cameraController.value.isInitialized
+        child: !_hasPermission
             ? _needPermissionAlert
                 ? AlertDialog(
                     title: const Text(
@@ -235,26 +248,28 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
             : Stack(
                 alignment: Alignment.center,
                 children: [
-                  CameraPreview(_cameraController),
-                  Positioned(
-                    top: Sizes.size20,
-                    right: Sizes.size20,
-                    child: Column(
-                      children: [
-                        IconButton(
-                          color: Colors.grey.shade300,
-                          onPressed: toogleSelfieMode,
-                          icon: const Icon(
-                            Icons.cameraswitch,
+                  if (!_noCamera && _cameraController.value.isInitialized)
+                    CameraPreview(_cameraController),
+                  if (!_noCamera)
+                    Positioned(
+                      top: Sizes.size20,
+                      right: Sizes.size20,
+                      child: Column(
+                        children: [
+                          IconButton(
+                            color: Colors.grey.shade300,
+                            onPressed: toogleSelfieMode,
+                            icon: const Icon(
+                              Icons.cameraswitch,
+                            ),
                           ),
-                        ),
-                        Gaps.v5,
-                        FlashModeWidget(
-                          cameraController: _cameraController,
-                        ),
-                      ],
+                          Gaps.v5,
+                          FlashModeWidget(
+                            cameraController: _cameraController,
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
                   Positioned(
                     bottom: Sizes.size40,
                     width: MediaQuery.of(context).size.width,
@@ -262,8 +277,8 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
                       children: [
                         const Spacer(),
                         GestureDetector(
-                          // onTapDown: _startRecording,
-                          // onTapUp: (TapUpDetails) => _stopRecording(),
+                          onTapDown: _startRecording,
+                          onTapUp: (TapUpDetails) => _stopRecording(),
                           onPanUpdate: _changeCameraZoom,
                           child: ScaleTransition(
                             scale: _buttonAnimation,
