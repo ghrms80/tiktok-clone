@@ -37,7 +37,7 @@ class TicTokApp extends StatelessWidget {
         Locale('en'),
         Locale('ko'),
       ],
-      // themeMode: ThemeMode.system,
+      // themeMode: ThemeMode.dark,
       themeMode: ThemeMode.system,
       theme: ThemeData(
         useMaterial3: true,
