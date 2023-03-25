@@ -19,8 +19,11 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     with TickerProviderStateMixin, WidgetsBindingObserver {
   bool _hasPermission = false;
   bool _needPermissionAlert = false;
-
   bool _isSelfieMode = false;
+
+  late double _maxZoom;
+  late double _currentZoom;
+  late double _minZoom;
 
   late final AnimationController _buttonAnimationController =
       AnimationController(
@@ -31,7 +34,7 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
   late final AnimationController _progressAnimationController =
       AnimationController(
     vsync: this,
-    duration: const Duration(seconds: 5),
+    duration: const Duration(seconds: 10),
     lowerBound: 0.0,
     upperBound: 1.0,
   );
@@ -93,8 +96,13 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     );
 
     await _cameraController.initialize();
+    await _cameraController.prepareForVideoRecording(); // only Apple
 
-    await _cameraController.prepareForVideoRecording();
+    _minZoom = await _cameraController.getMinZoomLevel(); // 1.0
+    _maxZoom = await _cameraController.getMaxZoomLevel(); // 10.0
+    _currentZoom = _minZoom;
+
+    print('minZoom: $_minZoom, maxZoom:$_maxZoom');
 
     setState(() {});
   }
@@ -176,6 +184,21 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     );
   }
 
+  Future<void> _changeCameraZoom(DragUpdateDetails details) async {
+    final double dy = details.localPosition.dy;
+    late double zoomLevel;
+    if (dy >= 0) {
+      if (_currentZoom + (-dy * 0.15) < _minZoom) return;
+      zoomLevel = _currentZoom + (-dy * 0.15);
+    }
+    if (details.localPosition.dy < 0) {
+      if (_currentZoom + (-dy * 0.015) > _maxZoom) return;
+      zoomLevel = _currentZoom + (-dy * 0.015);
+    }
+    await _cameraController.setZoomLevel(zoomLevel);
+    print("dy: $dy,zoomLevel: $zoomLevel");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -239,8 +262,9 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
                       children: [
                         const Spacer(),
                         GestureDetector(
-                          onTapDown: _startRecording,
-                          onTapUp: (TapUpDetails) => _stopRecording(),
+                          // onTapDown: _startRecording,
+                          // onTapUp: (TapUpDetails) => _stopRecording(),
+                          onPanUpdate: _changeCameraZoom,
                           child: ScaleTransition(
                             scale: _buttonAnimation,
                             child: Stack(
