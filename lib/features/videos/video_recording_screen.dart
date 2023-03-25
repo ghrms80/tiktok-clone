@@ -1,7 +1,4 @@
-import 'dart:io';
-
 import 'package:camera/camera.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
@@ -27,7 +24,8 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
   bool _needPermissionAlert = false;
   bool _isSelfieMode = false;
 
-  final bool _noCamera = kDebugMode && Platform.isIOS;
+  // final bool _noCamera = kDebugMode && Platform.isIOS;
+  final bool _noCamera = false;
 
   late double _maxZoom;
   late double _currentZoom;
@@ -81,6 +79,10 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
   void dispose() {
     _progressAnimationController.dispose();
     _buttonAnimationController.dispose();
+    if (!_noCamera) {
+      _cameraController.dispose();
+    }
+    _cameraController.dispose();
     _cameraController.dispose();
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
@@ -88,6 +90,7 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
 
   @override
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
+    if (_noCamera) return;
     if (!_hasPermission) return;
     if (!_cameraController.value.isInitialized) return;
     if (state == AppLifecycleState.inactive) {
@@ -253,6 +256,13 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
                 children: [
                   if (!_noCamera && _cameraController.value.isInitialized)
                     CameraPreview(_cameraController),
+                  const Positioned(
+                    top: Sizes.size40,
+                    left: Sizes.size20,
+                    child: CloseButton(
+                      color: Colors.white,
+                    ),
+                  ),
                   if (!_noCamera)
                     Positioned(
                       top: Sizes.size20,
