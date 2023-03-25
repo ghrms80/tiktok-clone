@@ -24,6 +24,7 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
   bool _needPermissionAlert = false;
   bool _isSelfieMode = false;
 
+  // web에서 실행시 에러 발생
   // final bool _noCamera = kDebugMode && Platform.isIOS;
   final bool _noCamera = false;
 
@@ -121,7 +122,7 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     _maxZoom = await _cameraController.getMaxZoomLevel(); // 10.0
     _currentZoom = _minZoom;
 
-    print('minZoom: $_minZoom, maxZoom:$_maxZoom');
+    // print('minZoom: $_minZoom, maxZoom:$_maxZoom');
 
     setState(() {});
   }
@@ -215,7 +216,7 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
       zoomLevel = _currentZoom + (-dy * 0.015);
     }
     await _cameraController.setZoomLevel(zoomLevel);
-    print("dy: $dy,zoomLevel: $zoomLevel");
+    // print("dy: $dy,zoomLevel: $zoomLevel");
   }
 
   @override
