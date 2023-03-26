@@ -292,7 +292,10 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
                         const Spacer(),
                         GestureDetector(
                           onTapDown: _startRecording,
-                          onTapUp: (TapUpDetails) => _stopRecording(),
+                          // ignore: non_constant_identifier_names, avoid_types_as_parameter_names
+                          onTapUp: (TapUpDetails) {
+                            _stopRecording();
+                          },
                           onPanUpdate: _changeCameraZoom,
                           child: ScaleTransition(
                             scale: _buttonAnimation,
