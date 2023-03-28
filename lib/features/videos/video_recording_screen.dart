@@ -296,7 +296,7 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
                           onTapUp: (TapUpDetails) {
                             _stopRecording();
                           },
-                          onPanUpdate: _changeCameraZoom,
+                          // onPanUpdate: _changeCameraZoom,
                           child: ScaleTransition(
                             scale: _buttonAnimation,
                             child: Stack(
