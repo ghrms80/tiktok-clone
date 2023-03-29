@@ -14,7 +14,7 @@ void main() async {
     ],
   );
 
-  runApp(const TicTokApp());
+  runApp(TicTokApp());
 }
 
 class TicTokApp extends StatelessWidget {
