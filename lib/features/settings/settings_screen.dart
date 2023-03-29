@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/common/widgets/main_navigation/widgets/video_config/video_config.dart';
+import 'package:tiktok_clone/common/widgets/main_navigation/widgets/theme_config/mode_config.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -30,6 +31,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
       body: ListView(
         children: [
+          ValueListenableBuilder(
+            valueListenable: modeConfig,
+            builder: (context, value, child) => SwitchListTile.adaptive(
+              value: value == 'dark' ? true : false,
+              onChanged: (value) {
+                modeConfig.value = value ? 'dark' : 'light';
+              },
+              title: const Text("App Theme Mode"),
+              subtitle: const Text("Light/Dark Mode"),
+            ),
+          ),
           ValueListenableBuilder(
             valueListenable: videoConfig,
             builder: (context, value, child) => SwitchListTile.adaptive(

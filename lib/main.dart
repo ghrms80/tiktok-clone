@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:tiktok_clone/common/widgets/main_navigation/widgets/theme_config/mode_config.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/generated/l10n.dart';
 import 'package:tiktok_clone/router.dart';
@@ -14,11 +15,28 @@ void main() async {
     ],
   );
 
-  runApp(TicTokApp());
+  runApp(const TicTokApp());
 }
 
-class TicTokApp extends StatelessWidget {
+class TicTokApp extends StatefulWidget {
   const TicTokApp({super.key});
+
+  @override
+  State<TicTokApp> createState() => _TicTokAppState();
+}
+
+class _TicTokAppState extends State<TicTokApp> {
+  String themeMode = modeConfig.value;
+
+  @override
+  void initState() {
+    super.initState();
+    modeConfig.addListener(() {
+      setState(() {
+        themeMode = modeConfig.value;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,8 +55,8 @@ class TicTokApp extends StatelessWidget {
         Locale('en'),
         Locale('ko'),
       ],
-      // themeMode: ThemeMode.dark,
-      themeMode: ThemeMode.system,
+      // themeMode: ThemeMode.system,
+      themeMode: themeMode == "light" ? ThemeMode.light : ThemeMode.dark,
       theme: ThemeData(
         useMaterial3: true,
         brightness: Brightness.light,
