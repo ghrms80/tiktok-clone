@@ -48,6 +48,7 @@ class _VideoPostState extends State<VideoPost>
 
   bool _isPaused = false;
   bool _isMoreTagsShowed = false;
+  bool _isMuted = false;
 
   final Iterable<String> _tags = keywords.map((tag) => "#$tag");
   late final String _tagString;
@@ -90,26 +91,33 @@ class _VideoPostState extends State<VideoPost>
       duration: _animationDuration,
     );
 
-    context
-        .read<PlaybackConfigViewModel>()
-        .addListener(_onPlaybackConfigChanged);
-
     final autoplay = context.read<PlaybackConfigViewModel>().autoplay;
     if (!autoplay) {
       setState(() {
         _isPaused = true;
       });
     }
+
+    initMuted();
   }
 
-  void _onPlaybackConfigChanged() {
-    if (!mounted) return;
-    final muted = context.read<PlaybackConfigViewModel>().muted;
-    if (muted) {
-      _videoPlayerController.setVolume(0);
-    } else {
-      _videoPlayerController.setVolume(1);
-    }
+  void initMuted() {
+    final isMuted = context.read<PlaybackConfigViewModel>().muted;
+    setMuted(isMuted);
+    setState(() {
+      _isMuted = isMuted;
+    });
+  }
+
+  void setMuted(bool isMuted) => isMuted
+      ? _videoPlayerController.setVolume(0)
+      : _videoPlayerController.setVolume(1);
+
+  void toggleMuted() {
+    setMuted(!_isMuted);
+    setState(() {
+      _isMuted = !_isMuted;
+    });
   }
 
   @override
@@ -215,16 +223,12 @@ class _VideoPostState extends State<VideoPost>
             top: 40,
             child: IconButton(
               icon: FaIcon(
-                context.watch<PlaybackConfigViewModel>().muted
+                _isMuted
                     ? FontAwesomeIcons.volumeOff
                     : FontAwesomeIcons.volumeHigh,
                 color: Colors.white,
               ),
-              onPressed: () {
-                context
-                    .read<PlaybackConfigViewModel>()
-                    .setMuted(!context.read<PlaybackConfigViewModel>().muted);
-              },
+              onPressed: toggleMuted,
             ),
           ),
           Positioned(
