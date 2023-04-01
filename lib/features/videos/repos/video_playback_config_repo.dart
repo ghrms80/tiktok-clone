@@ -4,7 +4,7 @@ class VideoPlaybackConfigRepository {
   static const String _autoplay = "autoplay";
   static const String _muted = "muted";
 
-  SharedPreferences _preferences;
+  final SharedPreferences _preferences;
 
   VideoPlaybackConfigRepository(this._preferences);
 
