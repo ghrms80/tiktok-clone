@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:marquee/marquee.dart';
-import 'package:provider/provider.dart';
-import 'package:tiktok_clone/common/widgets/video_config/video_config.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
-import 'package:tiktok_clone/features/videos/view_models/playback_config_vm.dart';
 import 'package:tiktok_clone/features/videos/views/widgets/video_button.dart';
 import 'package:tiktok_clone/features/videos/views/widgets/video_comments.dart';
 import 'package:tiktok_clone/generated/l10n.dart';
@@ -48,7 +45,6 @@ class _VideoPostState extends State<VideoPost>
 
   bool _isPaused = false;
   bool _isMoreTagsShowed = false;
-  bool _isMuted = false;
 
   final Iterable<String> _tags = keywords.map((tag) => "#$tag");
   late final String _tagString;
@@ -81,7 +77,6 @@ class _VideoPostState extends State<VideoPost>
     _initVideoPlayer();
 
     _tagString = _tags.reduce((value, element) => "$value $element");
-    // print(_tagString);
 
     _animationController = AnimationController(
       vsync: this,
@@ -90,34 +85,16 @@ class _VideoPostState extends State<VideoPost>
       value: 1.5,
       duration: _animationDuration,
     );
+  }
 
-    final autoplay = context.read<PlaybackConfigViewModel>().autoplay;
-    if (!autoplay) {
-      setState(() {
-        _isPaused = true;
-      });
+  void _onPlaybackConfigChanged() {
+    if (!mounted) return;
+
+    if (false) {
+      _videoPlayerController.setVolume(0);
+    } else {
+      _videoPlayerController.setVolume(1);
     }
-
-    initMuted();
-  }
-
-  void initMuted() {
-    final isMuted = context.read<PlaybackConfigViewModel>().muted;
-    setMuted(isMuted);
-    setState(() {
-      _isMuted = isMuted;
-    });
-  }
-
-  void setMuted(bool isMuted) => isMuted
-      ? _videoPlayerController.setVolume(0)
-      : _videoPlayerController.setVolume(1);
-
-  void toggleMuted() {
-    setMuted(!_isMuted);
-    setState(() {
-      _isMuted = !_isMuted;
-    });
   }
 
   @override
@@ -129,11 +106,11 @@ class _VideoPostState extends State<VideoPost>
 
   void _onVisibilityChanged(VisibilityInfo info) {
     if (!mounted) return;
-    final autoplay = context.read<PlaybackConfigViewModel>().autoplay;
+
     if (info.visibleFraction == 1 &&
         !_isPaused &&
         !_videoPlayerController.value.isPlaying) {
-      if (autoplay) {
+      if (false) {
         _videoPlayerController.play();
       }
     }
@@ -223,12 +200,12 @@ class _VideoPostState extends State<VideoPost>
             top: 40,
             child: IconButton(
               icon: FaIcon(
-                _isMuted
+                false
                     ? FontAwesomeIcons.volumeOff
                     : FontAwesomeIcons.volumeHigh,
                 color: Colors.white,
               ),
-              onPressed: toggleMuted,
+              onPressed: () {},
             ),
           ),
           Positioned(
