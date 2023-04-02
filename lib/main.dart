@@ -44,7 +44,7 @@ class TicTokApp extends ConsumerStatefulWidget {
   const TicTokApp({super.key});
 
   @override
-  TicTokAppState createState() => TicTokAppState();
+  ConsumerState createState() => TicTokAppState();
 }
 
 class TicTokAppState extends ConsumerState<TicTokApp> {
