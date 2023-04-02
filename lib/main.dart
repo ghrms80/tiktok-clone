@@ -40,14 +40,14 @@ void main() async {
   );
 }
 
-class TicTokApp extends StatefulWidget {
+class TicTokApp extends ConsumerStatefulWidget {
   const TicTokApp({super.key});
 
   @override
-  State<TicTokApp> createState() => _TicTokAppState();
+  TicTokAppState createState() => TicTokAppState();
 }
 
-class _TicTokAppState extends State<TicTokApp> {
+class TicTokAppState extends ConsumerState<TicTokApp> {
   String themeMode = modeConfig.value;
 
   @override
@@ -64,7 +64,7 @@ class _TicTokAppState extends State<TicTokApp> {
   Widget build(BuildContext context) {
     // S.load(const Locale("en"));
     return MaterialApp.router(
-      routerConfig: router,
+      routerConfig: ref.watch(routerProvider),
       debugShowCheckedModeBanner: false,
       title: 'TikTok Clone',
       localizationsDelegates: const [
