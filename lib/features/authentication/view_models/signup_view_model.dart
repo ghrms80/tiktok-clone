@@ -22,7 +22,7 @@ class SignUpViewModel extends AsyncNotifier<void> {
 
     // 위 코드 대신 아래와 같이 작성할 수 있다.
     state = await AsyncValue.guard(
-      () async => await _authRepo.signUp(
+      () async => await _authRepo.emailSignUp(
         form["email"],
         form["password"],
       ),
