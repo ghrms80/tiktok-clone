@@ -5,8 +5,8 @@ import 'package:tiktok_clone/constants/sizes.dart';
 class AuthButton extends StatelessWidget {
   final String text;
   final FaIcon icon;
-  // final void Function(BuildContext) onTap;
-  final Function onTap;
+  final void Function(BuildContext context) onTap;
+  // final Function onTap;
 
   const AuthButton({
     super.key,
@@ -16,7 +16,7 @@ class AuthButton extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(context) {
     return GestureDetector(
       onTap: () => onTap(context),
       child: FractionallySizedBox(
