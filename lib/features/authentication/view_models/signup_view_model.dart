@@ -15,7 +15,6 @@ class SignUpViewModel extends AsyncNotifier<void> {
     _authRepo = ref.read(authRepo);
   }
 
-  // BuildContext context to context
   Future<void> signUp(BuildContext context) async {
     state = const AsyncValue.loading();
     final form = ref.read(signUpForm);
@@ -27,7 +26,13 @@ class SignUpViewModel extends AsyncNotifier<void> {
         form["password"],
       );
 
-      await users.createProfile(userCredential);
+      // await users.createProfile(userCredential);
+      await users.createProfile(
+        credential: userCredential,
+        email: form['email'],
+        name: form['name'],
+        birthday: form['birthday'],
+      );
     });
     if (state.hasError) {
       // ignore: use_build_context_synchronously
