@@ -1,8 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:tiktok_clone/features/authentication/repos/authentication_repo.dart';
 import 'package:tiktok_clone/utils.dart';
 
@@ -14,7 +12,7 @@ class SocialAuthViewModel extends AsyncNotifier<void> {
     _repository = ref.read(authRepo);
   }
 
-  Future<void> githubSignIn(BuildContext context) async {
+  Future<void> githubSignIn(context) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(
       () async => await _repository.githubSignIn(),
@@ -23,7 +21,7 @@ class SocialAuthViewModel extends AsyncNotifier<void> {
     if (state.hasError) {
       showFirebaseErrorSnack(context, state.error);
     } else {
-      context.goNamed('/home');
+      context.go('/home');
     }
   }
 }
