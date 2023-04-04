@@ -26,7 +26,6 @@ class UsersViewModel extends AsyncNotifier<UserProfileModel> {
     return UserProfileModel.empty();
   }
 
-  // Future<void> createProfile(UserCredential credential) async {
   Future<void> createProfile({
     required UserCredential credential,
     String email = "",
