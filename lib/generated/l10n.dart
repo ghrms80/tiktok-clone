@@ -128,6 +128,7 @@ class S {
     final String valueString = valueNumberFormat.format(value);
 
     return Intl.message(
+      // ignore: unnecessary_string_interpolations
       '$valueString',
       name: 'likeCount',
       desc: 'Anything you want',
@@ -143,6 +144,7 @@ class S {
     final String valueString = valueNumberFormat.format(value);
 
     return Intl.message(
+      // ignore: unnecessary_string_interpolations
       '$valueString',
       name: 'commentCount',
       desc: 'Anything you want',

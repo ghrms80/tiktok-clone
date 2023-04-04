@@ -204,6 +204,7 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     );
   }
 
+  // ignore: unused_element
   Future<void> _changeCameraZoom(DragUpdateDetails details) async {
     final double dy = details.localPosition.dy;
     late double zoomLevel;

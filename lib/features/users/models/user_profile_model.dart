@@ -23,10 +23,10 @@ class UserProfileModel {
   Map<String, String> toJson() {
     return {
       "uid": uid,
-"email": email,
-"name": name,
-"bio": bio,
-"link": link,
-    }
+      "email": email,
+      "name": name,
+      "bio": bio,
+      "link": link,
+    };
   }
 }
