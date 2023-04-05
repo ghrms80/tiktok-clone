@@ -11,8 +11,10 @@ class TimelineViewModel extends AsyncNotifier<List<VideoModel>> {
     state = const AsyncValue.loading();
     await Future.delayed(const Duration(seconds: 2));
 
-    final newVideo = VideoModel(title: "${DateTime.now()}");
-    _list = [..._list, newVideo];
+    // final newVideo = VideoModel(title: "${DateTime.now()}");
+    // _list = [..._list, newVideo];
+
+    _list = [..._list];
     // state = _list;  // 이렇게 데이터를 받을 수 없다.
     // AsyncNotifier 안에 있기 때문에 AsyncValue로 데이터를 받을수 있다.
     state = AsyncValue.data(_list);
