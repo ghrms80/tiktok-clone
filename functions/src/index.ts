@@ -3,10 +3,25 @@ import * as admin from "firebase-admin";
 
 admin.initializeApp();
 
-// firestore 외에도 database, auth도 가능
 export const onVideoCreated = functions.firestore
   .document("videos/{videoId}")
-  .onCreate(async (snapshot, context) => {
-    // snapshot은 방금 만들어진 영상을 의미
-    await snapshot.ref.update({"hello":"from functions"});
+  .onCreate(async (snapshot, context) => {  // 새 영상이 생성될 때 실행
+    // await snapshot.ref.update({"hello":"from functions"});
+    const spawn = require('child-process-promise').spawn;
+    const video = snapshot.data();
+    await spawn("ffmpeg", [
+      "-i",
+      video.fileUrl,  // download video
+      "-ss",
+      "00:00:01.000", // 1 sec frame
+      "-vframes",
+      "1",
+      "-vf", // video filter
+      "scale=150:-1", // width=150, height=aspect ratio
+      `/tmp/${snapshot.id}.jpg`  // temp storage
+    ]);
+    const storage = admin.storage();
+    await storage.bucket().upload(`/tmp/${snapshot.id}.jpg`, {
+      destination: `thumbnails/${snapshot.id}.jpg`,
+    });
   });
