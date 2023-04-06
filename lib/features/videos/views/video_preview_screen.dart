@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gallery_saver/gallery_saver.dart';
+import 'package:tiktok_clone/features/videos/models/video_upload.dart';
 import 'package:tiktok_clone/features/videos/view_models/upload_video_view_model.dart';
+import 'package:tiktok_clone/features/videos/views/widgets/video_upload_form.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoPreviewScreen extends ConsumerStatefulWidget {
@@ -63,10 +65,18 @@ class VideoPreviewScreenState extends ConsumerState<VideoPreviewScreen> {
     setState(() {});
   }
 
-  void _onUploadPressed() {
+  void _onUploadPressed() async {
+    _videoPlayerController.pause();
+    final data =
+        await Navigator.of(context).push<VideoUpload?>(VideoUploadForm.route());
+    if (data == null) return;
+    if (!mounted) return;
+
     ref.read(uploadVideoProvider.notifier).uploadVideo(
           video: File(widget.video.path),
           context: context,
+          title: data.title,
+          description: data.description,
         );
   }
 

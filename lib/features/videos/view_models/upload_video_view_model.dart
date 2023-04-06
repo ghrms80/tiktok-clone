@@ -19,9 +19,9 @@ class UploadvideoViewModel extends AsyncNotifier<void> {
 
   Future<void> uploadVideo({
     required File video,
-    // required String title,
-    // required String description,
     required BuildContext context,
+    required String title,
+    required String description,
   }) async {
     final user = ref.read(authRepo).user;
     final userProfile = ref.read(usersProvider).value;
@@ -36,8 +36,8 @@ class UploadvideoViewModel extends AsyncNotifier<void> {
         if (task.metadata != null) {
           await _repository.saveVideo(
             VideoModel(
-              title: "From Flutter!",
-              description: "Hello yeah!",
+              title: title,
+              description: description,
               fileUrl: await task.ref.getDownloadURL(),
               thumbnailUrl: "",
               creatorUid: user.uid,
