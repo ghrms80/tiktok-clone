@@ -26,12 +26,19 @@ class VideosRepository {
     final query = _db
         .collection("videos")
         .orderBy("createdAt", descending: true)
-        .limit(3);
+        .limit(2);
     if (lastItemCreateAt == null) {
       return query.get();
     } else {
       return query.startAfter([lastItemCreateAt]).get();
     }
+  }
+
+  Future<void> likeVideo(String videoId, String userId) async {
+    await _db.collection("likes").add({
+      "videoId": videoId,
+      "userId": userId,
+    });
   }
 }
 
