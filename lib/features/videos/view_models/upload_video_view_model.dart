@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:async';
 import 'dart:io';
 
@@ -48,7 +50,6 @@ class UploadvideoViewModel extends AsyncNotifier<void> {
               createdAt: DateTime.now().millisecondsSinceEpoch,
             ),
           );
-          // context.pushReplacement("/home");
           context.pop();
           context.pop();
         }
