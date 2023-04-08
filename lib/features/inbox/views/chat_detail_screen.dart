@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/features/inbox/view_models/messages_view_model.dart';
 
-class ChatDetailScreen extends StatefulWidget {
+class ChatDetailScreen extends ConsumerStatefulWidget {
   static const String routeName = "chatDetail";
   static const String routeURL = ":chatId";
   final String chatId;
@@ -14,10 +16,10 @@ class ChatDetailScreen extends StatefulWidget {
   });
 
   @override
-  State<ChatDetailScreen> createState() => _ChatDetailScreenState();
+  ConsumerState<ChatDetailScreen> createState() => _ChatDetailScreenState();
 }
 
-class _ChatDetailScreenState extends State<ChatDetailScreen> {
+class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
   final TextEditingController _textEditingController = TextEditingController();
 
   // bool _isWriting = false;
@@ -46,8 +48,16 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
     super.dispose();
   }
 
+  void _onSendPress() {
+    final text = _textEditingController.text;
+    if (text == "") return;
+    ref.read(messagesProvider.notifier).sendMessage(text);
+    _textEditingController.text = "";
+  }
+
   @override
   Widget build(BuildContext context) {
+    final isLoading = ref.watch(messagesProvider).isLoading;
     return Scaffold(
       appBar: AppBar(
         title: ListTile(
@@ -220,14 +230,17 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                         color: Colors.grey.shade300,
                         shape: BoxShape.circle,
                       ),
-                      child: const Padding(
-                        padding: EdgeInsets.all(
-                          Sizes.size8,
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          right: Sizes.size2,
                         ),
-                        child: Center(
-                          child: FaIcon(
-                            FontAwesomeIcons.paperPlane,
-                            color: Colors.white,
+                        child: IconButton(
+                          onPressed: isLoading ? null : _onSendPress,
+                          icon: FaIcon(
+                            isLoading
+                                ? FontAwesomeIcons.hourglass
+                                : FontAwesomeIcons.paperPlane,
+                            color: Colors.grey.shade800,
                             size: Sizes.size20,
                           ),
                         ),
