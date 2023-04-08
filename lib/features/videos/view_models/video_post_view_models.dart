@@ -1,27 +1,45 @@
 import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tiktok_clone/features/authentication/repos/authentication_repo.dart';
+import 'package:tiktok_clone/features/videos/models/video_like_model.dart';
 import 'package:tiktok_clone/features/videos/repos/videos_repo.dart';
 
-class VideoPostViewModel extends FamilyAsyncNotifier<void, String> {
+class VideoPostViewModel extends FamilyAsyncNotifier<VideoLikeModel, String> {
   late final VideosRepository _repository;
-  // ignore: prefer_typing_uninitialized_variables
-  late final _videoId;
+  late final String _videoId;
+  late final String _userId;
+  bool _isLiked = false;
+  int _likeCounts = 0;
 
   @override
-  FutureOr<void> build(String arg) {
-    _videoId = arg;
+  FutureOr<VideoLikeModel> build(String arg) {
+    final idsStr = arg.split("000");
+    _videoId = idsStr[0];
+    _userId = idsStr[1];
     _repository = ref.read(videosRepo);
+
+    return isLikedVideo();
+  }
+
+  Future<VideoLikeModel> isLikedVideo() async {
+    final likeData =
+        await _repository.isLiked(videoId: _videoId, userId: _userId);
+    _isLiked = likeData.isLikeVideo;
+    _likeCounts = likeData.likeCount;
+    return likeData;
   }
 
   Future<void> likeVideo() async {
-    final user = ref.read(authRepo).user;
-    await _repository.likeVideo(_videoId, user!.uid);
+    final isLiked =
+        await _repository.likeVideo(videoId: _videoId, userId: _userId);
+    _isLiked = !_isLiked;
+    _likeCounts = isLiked ? _likeCounts - 1 : _likeCounts + 1;
+    state = AsyncValue.data(
+        VideoLikeModel(isLikeVideo: _isLiked, likeCount: _likeCounts));
   }
 }
 
 final videoPostProvider =
-    AsyncNotifierProvider.family<VideoPostViewModel, void, String>(
+    AsyncNotifierProvider.family<VideoPostViewModel, VideoLikeModel, String>(
   () => VideoPostViewModel(),
 );
