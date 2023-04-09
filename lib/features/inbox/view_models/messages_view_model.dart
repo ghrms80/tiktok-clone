@@ -34,6 +34,8 @@ final messagesProvider = AsyncNotifierProvider<MessagesViewModel, void>(
 );
 
 final chatProvider = StreamProvider.autoDispose<List<MessageModel>>((ref) {
+// final chatProvider = StreamProvider.autoDispose
+//     .family<List<MessageModel>, String>((ref, chatRoomId) {
   final db = FirebaseFirestore.instance;
 
   return db
