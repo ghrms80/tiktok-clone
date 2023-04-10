@@ -29,6 +29,10 @@ class NotificationsProvider extends AsyncNotifier {
       print(notification.data['screen']);
     });
     // Terminated
+    final notification = await _messaging.getInitialMessage();
+    if (notification != null) {
+      print(notification.data['screen']);
+    }
   }
 
   @override
